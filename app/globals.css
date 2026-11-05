@@ -1,26 +1,230 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── BankGothic Md BT — commercial font loaded from /public/fonts/ ─────
+   Place BankGothicMdBT.woff2 (and optionally .woff) at public/fonts/.
+   The font is used for the marquee ticker and rotating card label.        */
+@font-face {
+  font-family: 'BankGothic';
+  src: url('/fonts/BankGothicMdBT.woff2') format('woff2'),
+       url('/fonts/BankGothicMdBT.woff')  format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Brand tokens ── available as bg-navy, text-cu2, border-ln, etc. ─── */
+@theme {
+  --color-navy: #19224e;
+  --color-blue: #005889;
+  --color-cu:   #ae6127;
+  --color-cu2:  #eaa55a;
+  --color-bg:   #f7f9fb;
+  --color-ink:  #19224e;
+  --color-mut:  #59617f;
+  --color-ln:   #dde3ea;
+
+  /* Next.js injects these CSS vars via the .variable class on <html> */
+  --font-bricolage:  var(--font-bricolage),  'Bricolage Grotesque', system-ui, sans-serif;
+  --font-montserrat: var(--font-montserrat), 'Montserrat',          system-ui, sans-serif;
+  --font-bankgothic: 'BankGothic', 'Montserrat', system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base resets ────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+  padding-top:    env(safe-area-inset-top,    0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-bricolage), 'Bricolage Grotesque', system-ui, sans-serif;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ─── Keyframes ──────────────────────────────────────────────────────────── */
+@keyframes up   { to { transform: none; } }
+@keyframes spin { 50% { transform: rotate(180deg) scale(1.1); } to { transform: rotate(360deg); } }
+@keyframes fl   { 50% { transform: translateY(-12px); } }
+@keyframes rot  { to  { transform: rotate(360deg); } }
+@keyframes mq   { to  { transform: translateX(-50%); } }
+@keyframes rv-in {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ─── Reveal animation (JS adds .in class via IntersectionObserver) ──────── */
+.rv {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  transition: opacity 0.9s, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.rv.in { opacity: 1; transform: none; }
+
+/* ─── Tag ::before gradient bar (pseudo — can't do in Tailwind) ──────────── */
+.tag-bar::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: linear-gradient(90deg, #ae6127, #eaa55a);
+  flex-shrink: 0;
+}
+
+/* ─── Hero headline line-reveal — triggered by .hero-animate (IntersectionObserver) */
+.hero-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+/* Hidden by default — no animation until JS adds .hero-animate to the h1 */
+.hero-line span {
+  display: inline-block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+/* Fire animation once .hero-animate is present on the h1 */
+.hero-animate .hero-line span {
+  animation: up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-animate .hero-line:nth-child(1) span { animation-delay: 0.05s; }
+.hero-animate .hero-line:nth-child(2) span { animation-delay: 0.22s; }
+
+/* ─── Orb ::after dot (pseudo-element on each orbit ring) ───────────────── */
+.orb-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1px dashed rgba(0, 88, 137, 0.35);
+  animation: rot 24s linear infinite;
+}
+.orb-ring:nth-of-type(2) {
+  inset: -9%;
+  animation-duration: 38s;
+  animation-direction: reverse;
+  border-color: rgba(174, 97, 39, 0.35);
+}
+.orb-ring::after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #005889;
+  box-shadow: 0 0 0 6px rgba(0, 88, 137, 0.15);
+}
+.orb-ring:nth-of-type(2)::after {
+  background: #ae6127;
+  box-shadow: 0 0 0 6px rgba(174, 97, 39, 0.15);
+}
+
+/* ─── Bento stripe overlay (repeating gradient — no Tailwind equivalent) ─── */
+.bento-stripe {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 38px,
+    rgba(255, 255, 255, 0.07) 38px 39px
+  );
+  pointer-events: none;
+}
+
+/* ─── Bento card icon — absolute positioned, hover transforms ────────────── */
+.bc-icon {
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  width: 190px;
+  opacity: 0.12;
+  transition: 0.8s;
+}
+.bc-icon-hover:hover .bc-icon {
+  transform: rotate(25deg) scale(1.15);
+}
+
+/* ─── Process steps — ::before line + ::after gradient progress ─────────── */
+.steps-track {
+  position: relative;
+}
+.steps-track::before {
+  content: "";
+  position: absolute;
+  top: 34px;
+  left: 6%;
+  right: 6%;
+  height: 2px;
+  background: #dde3ea;
+}
+.steps-track::after {
+  content: "";
+  position: absolute;
+  top: 34px;
+  left: 6%;
+  height: 2px;
+  width: var(--p, 0%);
+  max-width: 88%;
+  background: linear-gradient(90deg, #005889, #eaa55a);
+}
+
+/* ─── Industries row — ::before scaleY hover fill ────────────────────────── */
+.ind-row {
+  isolation: isolate;
+}
+.ind-item {
+  position: relative;
+  transition: 0.4s;
+}
+.ind-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #19224e, #005889);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+  z-index: -1;
+  border-radius: 14px;
+}
+.ind-item:hover { color: #fff; padding-inline: 28px; }
+.ind-item:hover::before { transform: scaleY(1); }
+.ind-item:hover .ind-arrow { transform: rotate(-45deg); }
+
+/* ─── Card3 — conic-gradient ::before border (no Tailwind equivalent) ────── */
+.card3-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(0, 88, 137, 0.7),
+    transparent 40%,
+    rgba(234, 165, 90, 0.5),
+    transparent 80%
+  );
+  animation: rot 14s linear infinite;
+}
+
+/* ─── Preloader dismiss ──────────────────────────────────────────────────── */
+#pre.go { transform: translateY(-100%); }
+
+/* ─── Reduced motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  .rv { opacity: 1; transform: none; }
+  .hero-line span { transform: none; }
+  .hero-animate .hero-line span { animation: none; transform: none; }
+  #pre { display: none; }
 }
