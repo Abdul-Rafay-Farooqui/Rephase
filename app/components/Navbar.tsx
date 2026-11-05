@@ -14,11 +14,11 @@ export default function Navbar() {
         {/* Logo */}
         <a href="#top" className="flex items-center gap-[10px] font-[family-name:var(--font-bankgothic)] font-medium text-[16px] tracking-[.12em] text-navy no-underline uppercase">
           <Image
-            src="/logo.png"
+            src="/logover.png"
             alt="Rephase"
-            width={100}
-            height={100}
-            className="w-[100px] h-auto object-contain"
+            width={300}
+            height={300}
+            className="w-[100px] md:w-[200px] h-auto object-contain"
             priority
           />
         </a>
@@ -34,7 +34,7 @@ export default function Navbar() {
         {/* CTA button */}
         <a
           href="#contact"
-          className="group inline-flex items-center gap-3 px-[26px] py-[15px] rounded-full bg-navy text-white! font-[family-name:var(--font-montserrat)] font-bold text-[12px] tracking-[.14em] uppercase transition-[background] duration-300 hover:bg-blue"
+          className="group inline-flex items-center gap-3 px-[16px] md:px-[26px] py-[10px] md:py-[15px] rounded-full bg-navy text-white! font-[family-name:var(--font-montserrat)] font-bold text-[10px] md:text-[12px] tracking-[.14em] uppercase transition-[background] duration-300 hover:bg-blue"
         >
           Contact
           <span className="grid place-items-center w-6 h-6 rounded-full bg-cu2 transition-transform duration-300 group-hover:rotate-[-45deg]">

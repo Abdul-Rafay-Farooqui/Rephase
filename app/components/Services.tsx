@@ -79,7 +79,8 @@ export default function Services() {
             <span className="font-[family-name:var(--font-bricolage)] font-light text-[14px] tracking-[.1em] opacity-70">04</span>
             <div>
               <h3 className="font-[family-name:var(--font-bricolage)] text-[clamp(20px,2.3vw,30px)] uppercase mt-[50px] mb-3">
-                Materials Recycling
+                <span className="block">Materials</span>
+                <span>Recycling</span>
               </h3>
               <p className="m-0 max-w-[420px] opacity-85">
                 Recoverable metals and materials directed toward appropriate channels.

@@ -98,7 +98,7 @@ export default function HeroIntro() {
     'h-[100svh] flex items-center justify-center px-7 will-change-[opacity]'
 
   return (
-    <section ref={sectionRef} className="relative z-[1]  justify-self-center pl-5 w-[80%]">
+    <section ref={sectionRef} className="relative z-[1]  justify-self-center md:pl-5 w-full md:w-[80%]">
       {/* Pinned background panel */}
       <div className="sticky top-1 h-[100svh] p-3 max-[900px]:p-2">
         <div className="relative w-full h-full rounded-[28px] overflow-hidden">

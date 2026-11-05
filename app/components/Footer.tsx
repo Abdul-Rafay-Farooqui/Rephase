@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 const NAV = [
   { label: 'Services',   href: '#services' },
@@ -14,7 +14,7 @@ export default function Cta() {
   return (
     <footer
       id="contact"
-      className="relative z-[1] text-white overflow-hidden max-[900px]:rounded-[28px]"
+      className="relative z-[1] text-white overflow-hidden md:max-[900px]:rounded-[28px]"
       style={{ background: 'linear-gradient(120deg,#19224e 30%,#005889)' }}
     >
       <div className="max-w-[1240px] mx-auto px-7 pt-[clamp(60px,9vw,120px)]">
@@ -36,12 +36,12 @@ export default function Cta() {
 
           <div className="justify-self-end max-[900px]:justify-self-start">
             <a
-              href="mailto:hello@rephase.com"
-              className={`group inline-flex items-center gap-3 px-[26px] py-[15px] rounded-full bg-cu text-white ${mont} font-bold text-[12px] tracking-[.14em] uppercase transition-[background,color] duration-300 will-change-transform hover:bg-white hover:text-navy`}
+              href="mailto:reece@rephaseassetrecovery.com"
+              className={`group inline-flex items-center gap-3 px-[26px] py-[15px] rounded-full bg-cu text-white ${mont} font-bold text-[12px] tracking-[.14em] uppercase transition-[background,color] duration-300 will-change-transform hover:bg-white hover:text-cu!`}
             >
               Contact Rephase
               <span className="grid place-items-center w-6 h-6 rounded-full bg-navy text-white transition-transform duration-300 group-hover:rotate-[-45deg]">
-                <ArrowUpRight size={14} strokeWidth={2.5} />
+                <ArrowRight size={14} strokeWidth={2.5} />
               </span>
             </a>
           </div>
@@ -54,9 +54,9 @@ export default function Cta() {
               <Image
                 src="/logo.png"
                 alt="Rephase"
-                width={100}
-                height={100}
-                className="w-[110px] h-auto object-contain brightness-0 invert"
+                width={300}
+                height={300}
+                className="w-[170px] h-auto object-contain brightness-0 invert"
               />
             </a>
             <p className="mt-5 max-w-[320px] text-white/65 text-[15px] leading-[1.7]">
@@ -82,19 +82,28 @@ export default function Cta() {
             </ul>
           </div>
 
-          <div>
+          <div className="relative overflow-hidden">
             <h3 className={`${mont} font-bold text-[11px] tracking-[.22em] uppercase text-cu2 mb-5`}>
               Contact
             </h3>
             <a
-              href="mailto:hello@rephase.com"
-              className="text-[17px] text-white/90 border-b border-white/30 pb-[2px] transition-colors duration-300 hover:text-cu2 hover:border-cu2"
+              href="mailto:reece@rephaseassetrecovery.com"
+              className="relative z-[1] text-[17px] text-white/90 border-b border-white/30 pb-[2px] transition-colors duration-300 hover:text-cu2 hover:border-cu2"
             >
-              hello@rephase.com
+              reece@rephaseassetrecovery.com
             </a>
+            {/* Logo watermark — black, behind and below the email */}
+            <Image
+              src="/logor.png"
+              alt=""
+              aria-hidden="true"
+              width={400}
+              height={400}
+              className="absolute -bottom-0 right-16 w-[200px] h-auto object-contain opacity-[0.08] brightness-0 invert pointer-events-none select-none"
+            />
           </div>
         </div>
-
+        
 
 
         {/* Bottom bar */}

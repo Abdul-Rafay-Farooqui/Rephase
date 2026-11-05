@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 // Put one photo per pillar in /public/about/ (suggested size 900x1200, portrait).
 const PILLARS = [
@@ -61,13 +61,13 @@ export default function About() {
 
               {/* Arrow */}
               <span className="absolute top-5 right-5 grid place-items-center w-10 h-10 rounded-full bg-white text-navy transition-[background,color,transform] duration-300 group-hover:bg-cu group-hover:text-white group-hover:rotate-45">
-                <ArrowUpRight size={18} strokeWidth={2.5} />
+                <ArrowRight size={18} strokeWidth={2.5} />
               </span>
 
               {/* Label */}
               <div className="absolute inset-x-0 bottom-0 p-7">
-                <span className="block h-[3px] w-10 rounded-full bg-cu mb-5 transition-[width] duration-500 group-hover:w-20" />
-                <h3 className="font-[family-name:var(--font-montserrat)] font-bold text-[15px] tracking-[.16em] uppercase text-white">
+                <span className="block h-[3px] w-20 rounded-full bg-cu mb-5 transition-[width] duration-500 group-hover:w-20" />
+                <h3 className="font-[family-name:var(--font-montserrat)] font-bold text-[36px] tracking-[.16em] uppercase text-white">
                   {p.label}
                 </h3>
               </div>

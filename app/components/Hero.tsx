@@ -104,7 +104,7 @@ export default function Hero() {
   return (
     <header
       id="top"
-      className="relative h-screen overflow-hidden"
+      className="relative h-svh md:h-screen overflow-x-hidden"
     >
       {/* Background video */}
       <video
@@ -124,18 +124,18 @@ export default function Hero() {
       />
 
       {/* Animated canvas grid */}
-      <canvas
+      {/* <canvas
         id="grid"
         ref={canvasRef}
         aria-hidden="true"
         className="absolute inset-0 w-full h-full opacity-40 z-[2]"
-      />
+      /> */}
 
       {/* Headline — bottom-left, large, left-aligned */}
-      <div className="absolute z-[3] bottom-[8vh] left-0 px-7 max-w-[1240px] w-full mx-auto right-0">
+      <div className="absolute z-[3] bottom-[8vh] left-0 px-7 md:max-w-[1240px]  md:w-full md:mx-auto right-0">
         <h1
           ref={headingRef}
-          className="text-[100px] font-semibold font-[family-name:var(--font-bricolage)] leading-[0.95] tracking-[-0.03em] text-white max-w-[90%] max-[600px]:max-w-full"
+          className="text-[40px] md:text-[100px] font-semibold font-[family-name:var(--font-bricolage)] leading-[0.95] tracking-[-0.03em] text-white max-w-[90%] max-[600px]:max-w-full"
         >
           <span className="hero-line"><span>Recover value.</span></span>
           <span className="hero-line text-cu2"><span>Renew possibility</span></span>
