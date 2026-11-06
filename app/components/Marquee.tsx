@@ -18,7 +18,7 @@ export default function Marquee() {
   return (
     <div
       aria-hidden="true"
-      className="bg-navy text-white py-[22px] overflow-hidden whitespace-nowrap md:-mx-5 mb-20 "
+      className="bg-navy text-white py-[22px] overflow-hidden whitespace-nowrap mb-20 "
     >
       <div
         id="mq"

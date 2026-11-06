@@ -92,17 +92,7 @@ export default function Cta() {
             >
               reece@rephaseassetrecovery.com
             </a>
-            {/* Logo watermark — black, behind and below the email */}
-            
           </div>
-          <Image
-              src="/logor.png"
-              alt=""
-              aria-hidden="true"
-              width={400}
-              height={400}
-              className="absolute bottom-28 -right-28 w-[300px] h-auto object-contain opacity-[0.08] brightness-0 invert pointer-events-none select-none"
-            />
         </div>
         
 
