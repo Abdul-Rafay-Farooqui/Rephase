@@ -14,9 +14,9 @@ export default function Preloader() {
         <Image
           src="/logo.png"
           alt=""
-          width={90}
-          height={90}
-          className="w-[90px] h-auto object-contain brightness-0 invert [animation:spin_1.6s_ease-in-out_infinite]"
+          width={200}
+          height={200}
+          className="w-[150px] h-auto object-contain brightness-0 invert [animation:spin_1.6s_ease-in-out_infinite]"
           priority
         />
       </div>

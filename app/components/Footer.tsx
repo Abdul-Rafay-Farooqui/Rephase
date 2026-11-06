@@ -29,8 +29,8 @@ export default function Cta() {
               Find the value in{' '}
               <span className="text-cu2">what&rsquo;s next.</span>
             </h2>
-            <p className="max-w-[460px] opacity-85 text-[17px] leading-[1.6]">
-              Exploring surplus equipment, infrastructure upgrades, or asset recovery opportunities?
+            <p className=" opacity-85 text-[17px] leading-[1.6]">
+              <span className='lg:block'>Exploring surplus equipment, infrastructure upgrades,</span><span>or asset recovery opportunities?</span>
             </p>
           </div>
 
@@ -93,15 +93,16 @@ export default function Cta() {
               reece@rephaseassetrecovery.com
             </a>
             {/* Logo watermark — black, behind and below the email */}
-            <Image
+            
+          </div>
+          <Image
               src="/logor.png"
               alt=""
               aria-hidden="true"
               width={400}
               height={400}
-              className="absolute -bottom-0 right-16 w-[200px] h-auto object-contain opacity-[0.08] brightness-0 invert pointer-events-none select-none"
+              className="absolute bottom-28 -right-28 w-[300px] h-auto object-contain opacity-[0.08] brightness-0 invert pointer-events-none select-none"
             />
-          </div>
         </div>
         
 

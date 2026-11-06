@@ -31,7 +31,7 @@ export default function Services() {
             <span className="font-[family-name:var(--font-bricolage)] font-light text-[14px] tracking-[.1em] opacity-70">01</span>
             <div>
               <h3 className="font-[family-name:var(--font-bricolage)] text-[clamp(20px,2.3vw,30px)] uppercase mt-[50px] mb-3">
-                Electrical<br />Infrastructure
+                <span className="block">Electrical</span><span>Infrastructure</span>
               </h3>
               <p className="m-0 max-w-[420px] opacity-85">
                 Switchgear, transformers, copper conductors and power distribution assets.
@@ -47,7 +47,7 @@ export default function Services() {
             <span className="font-[family-name:var(--font-bricolage)] font-light text-[14px] tracking-[.1em] opacity-70">02</span>
             <div>
               <h3 className="font-[family-name:var(--font-bricolage)] text-[clamp(20px,2.3vw,30px)] uppercase mt-[50px] mb-3">
-                Technology &amp; Data Centers
+                <span className="block">Technology &amp;</span><span>Data Centers</span>
               </h3>
               <p className="m-0 max-w-[420px] opacity-85">
                 Surplus electronic equipment and technology infrastructure.
@@ -63,7 +63,7 @@ export default function Services() {
             <span className="font-[family-name:var(--font-bricolage)] font-light text-[14px] tracking-[.1em] opacity-70">03</span>
             <div>
               <h3 className="font-[family-name:var(--font-bricolage)] text-[clamp(20px,2.3vw,30px)] uppercase mt-[50px] mb-3">
-                Industrial Asset Recovery
+                <span className="block">Industrial</span><span> Asset Recovery</span>
               </h3>
               <p className="m-0 max-w-[420px] opacity-85">
                 Machinery, equipment and materials from industrial operations.
