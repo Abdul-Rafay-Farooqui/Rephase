@@ -32,11 +32,6 @@ export const metadata: Metadata = {
     'industrial surplus',
     'materials recycling',
   ],
-  icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
-    apple: '/logo.png',
-  },
   openGraph: {
     title: 'Rephase Asset Recovery',
     description: 'Recover value. Renew possibility.',

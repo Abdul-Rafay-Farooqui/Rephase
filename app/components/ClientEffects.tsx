@@ -18,12 +18,15 @@ export default function ClientEffects() {
     const $  = <T extends Element>(s: string) => document.querySelector<T>(s)
     const $$ = <T extends Element>(s: string) => [...document.querySelectorAll<T>(s)]
 
-    // ── Preloader ──────────────────────────────────────────────────────────
+    // ── Preloader — dismisses when hero video fires 'hero:ready' ──────────
     const pre = $('#pre')
     if (pre) {
-      const timer = setTimeout(() => pre.classList.add('go'), 500)
-      // Store for cleanup
-      ;(pre as HTMLElement & { _timer?: ReturnType<typeof setTimeout> })._timer = timer
+      function dismissPreloader() {
+        pre!.classList.add('go')
+      }
+      window.addEventListener('hero:ready', dismissPreloader, { once: true })
+      // Store ref for cleanup
+      ;(pre as HTMLElement & { _dismiss?: () => void })._dismiss = dismissPreloader
     }
 
     // ── Reveal (IntersectionObserver) ──────────────────────────────────────
@@ -115,8 +118,8 @@ export default function ClientEffects() {
     // ── Cleanup ────────────────────────────────────────────────────────────
     return () => {
       if (pre) {
-        const p = pre as HTMLElement & { _timer?: ReturnType<typeof setTimeout> }
-        clearTimeout(p._timer)
+        const p = pre as HTMLElement & { _dismiss?: () => void }
+        if (p._dismiss) window.removeEventListener('hero:ready', p._dismiss)
       }
       io.disconnect()
       window.removeEventListener('scroll', onScroll)

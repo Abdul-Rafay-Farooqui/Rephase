@@ -8,6 +8,28 @@ interface Pulse { x: number; y: number; d: 'x' | 'y'; s: number; l: number; c: s
 export default function Hero() {
   const canvasRef  = useRef<HTMLCanvasElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
+  const videoRef   = useRef<HTMLVideoElement>(null)
+
+  /* ── Dispatch 'hero:ready' once the video can play ──────────────────────── */
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    function onReady() {
+      window.dispatchEvent(new CustomEvent('hero:ready'))
+    }
+
+    // 'canplay' fires when enough data is buffered to start
+    video.addEventListener('canplay', onReady, { once: true })
+
+    // Safety net — dismiss preloader after 4s even if video never loads
+    const fallback = setTimeout(onReady, 4000)
+
+    return () => {
+      video.removeEventListener('canplay', onReady)
+      clearTimeout(fallback)
+    }
+  }, [])
 
   /* ── IntersectionObserver — fires .hero-animate on h1 when in view ─────── */
   useEffect(() => {
@@ -106,8 +128,9 @@ export default function Hero() {
       id="top"
       className="relative h-svh md:h-screen overflow-x-hidden"
     >
-      {/* Background video */}
+      {/* Background video — dispatches 'hero:ready' when it can play */}
       <video
+        ref={videoRef}
         autoPlay muted loop playsInline aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover object-center z-0"
         style={{ filter: 'saturate(0.7) brightness(0.65)' }}
