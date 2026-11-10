@@ -20,14 +20,12 @@ export default function ClientEffects() {
 
     // ── Preloader — dismisses when hero video fires 'hero:ready' ──────────
     const pre = $('#pre')
-    if (pre) {
-      function dismissPreloader() {
-        pre!.classList.add('go')
-      }
-      window.addEventListener('hero:ready', dismissPreloader, { once: true })
-      // Store ref for cleanup
-      ;(pre as HTMLElement & { _dismiss?: () => void })._dismiss = dismissPreloader
-    }
+let dismiss: (() => void) | null = null
+if (pre) {
+  dismiss = () => pre.classList.add('go')
+  if ((window as any).__heroReady) dismiss()
+  else window.addEventListener('hero:ready', dismiss, { once: true })
+}
 
     // ── Reveal (IntersectionObserver) ──────────────────────────────────────
     const io = new IntersectionObserver(
@@ -117,10 +115,7 @@ export default function ClientEffects() {
 
     // ── Cleanup ────────────────────────────────────────────────────────────
     return () => {
-      if (pre) {
-        const p = pre as HTMLElement & { _dismiss?: () => void }
-        if (p._dismiss) window.removeEventListener('hero:ready', p._dismiss)
-      }
+      if (dismiss) window.removeEventListener('hero:ready', dismiss)
       io.disconnect()
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('pointermove', onPointerMove)

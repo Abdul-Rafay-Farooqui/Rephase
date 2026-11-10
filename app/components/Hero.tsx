@@ -22,6 +22,12 @@ export default function Hero() {
     // 'canplay' fires when enough data is buffered to start
     video.addEventListener('canplay', onReady, { once: true })
 
+    // Explicitly call play() — React hydration can suppress the autoPlay attribute
+    video.play().catch(() => {
+      // Autoplay blocked (e.g. browser policy) — still dismiss preloader
+      onReady()
+    })
+
     // Safety net — dismiss preloader after 4s even if video never loads
     const fallback = setTimeout(onReady, 4000)
 
@@ -53,75 +59,34 @@ export default function Hero() {
 
   /* ── Canvas animated grid ───────────────────────────────────────────────── */
   useEffect(() => {
-    const cv = canvasRef.current
-    if (!cv) return
-    const ctx = cv.getContext('2d')!
+  const video = videoRef.current
+  if (!video) return
 
-    let W = 0, H = 0
-    let nodes: Node[] = []
-    let pulses: Pulse[] = []
-    const mx = { x: -999, y: -999 }
-    let rafId: number
+  const t0 = performance.now()
+  let done = false
+  const finish = (why: string) => {
+    if (done) return
+    done = true
+    console.log(`[hero] ready via ${why} after ${Math.round(performance.now() - t0)}ms`)
+    ;(window as any).__heroReady = true
+    window.dispatchEvent(new CustomEvent('hero:ready'))
+  }
 
-    function resize() {
-      W = cv!.width  = cv!.offsetWidth
-      H = cv!.height = cv!.offsetHeight
-      nodes = []
-      const g = W < 700 ? 70 : 90
-      for (let i = 0; i <= W / g + 1; i++)
-        for (let j = 0; j <= H / g + 1; j++)
-          nodes.push({ x: i * g, y: j * g })
+  const onPlaying = () => {
+    if ('requestVideoFrameCallback' in video) {
+      video.requestVideoFrameCallback(() => finish('frame painted'))
+    } else {
+      finish('playing')
     }
-    resize()
-    window.addEventListener('resize', resize)
+  }
 
-    const parent = cv.parentElement!
-    function onMove(e: PointerEvent) {
-      const r = cv!.getBoundingClientRect()
-      mx.x = e.clientX - r.left
-      mx.y = e.clientY - r.top
-    }
-    parent.addEventListener('pointermove', onMove)
+  video.muted = true // React omits this attribute from SSR HTML
+  // Resolves once playback has started, even if autoplay already began pre-hydration
+  video.play().then(onPlaying, () => finish('autoplay blocked'))
 
-    function spawnPulse() {
-      const n = nodes[Math.random() * nodes.length | 0]
-      pulses.push({ x: n.x, y: n.y, d: Math.random() < .5 ? 'x' : 'y', s: (Math.random() < .5 ? -1 : 1) * (1.4 + Math.random() * 1.6), l: 0, c: Math.random() < .5 ? '0,88,137' : '174,97,39' })
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, W, H)
-      const g = W < 700 ? 70 : 90
-      ctx.strokeStyle = 'rgba(25,34,78,.07)'; ctx.lineWidth = 1
-      for (let i = 0; i <= W; i += g) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke() }
-      for (let j = 0; j <= H; j += g) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(W, j); ctx.stroke() }
-      nodes.forEach(n => {
-        const dist = Math.hypot(n.x - mx.x, n.y - mx.y)
-        const r = dist < 160 ? (1 - dist / 160) : 0
-        ctx.beginPath(); ctx.arc(n.x, n.y, 2 + r * 5, 0, Math.PI * 2)
-        ctx.fillStyle = r ? `rgba(174,97,39,${.3 + r * .7})` : 'rgba(0,88,137,.25)'; ctx.fill()
-      })
-      if (Math.random() < .08 && pulses.length < 18) spawnPulse()
-      pulses = pulses.filter(p => {
-        p.l++
-        const px = p.x, py = p.y
-        if (p.d === 'x') p.x += p.s; else p.y += p.s
-        const tx = p.x - (p.d === 'x' ? p.s * 18 : 0), ty = p.y - (p.d === 'y' ? p.s * 18 : 0)
-        const gr = ctx.createLinearGradient(px, py, tx, ty)
-        gr.addColorStop(0, `rgba(${p.c},.9)`); gr.addColorStop(1, `rgba(${p.c},0)`)
-        ctx.strokeStyle = gr; ctx.lineWidth = 2.4
-        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(tx, ty); ctx.stroke()
-        return p.l < 140
-      })
-      rafId = requestAnimationFrame(draw)
-    }
-    draw()
-
-    return () => {
-      cancelAnimationFrame(rafId)
-      window.removeEventListener('resize', resize)
-      parent.removeEventListener('pointermove', onMove)
-    }
-  }, [])
+  const fallback = setTimeout(() => finish('timeout'), 6000)
+  return () => clearTimeout(fallback)
+}, [])
 
   return (
     <header
@@ -131,7 +96,7 @@ export default function Hero() {
       {/* Background video — dispatches 'hero:ready' when it can play */}
       <video
         ref={videoRef}
-        autoPlay muted loop playsInline aria-hidden="true"
+        autoPlay muted loop playsInline preload="auto" aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover object-center z-0"
         style={{ filter: 'saturate(0.7) brightness(0.65)' }}
       >
