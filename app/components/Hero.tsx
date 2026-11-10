@@ -100,8 +100,8 @@ export default function Hero() {
         className="absolute inset-0 w-full h-full object-cover object-center z-0"
         style={{ filter: 'saturate(0.7) brightness(0.65)' }}
       >
-        <source src="/bg.webm" type="video/webm" />
-        <source src="/bg.mp4"  type="video/mp4" />
+        <source src="/bgmain.webm" type="video/webm" />
+        <source src="/bgmain.mp4"  type="video/mp4" />
       </video>
 
       {/* Dark overlay — heavier at bottom where text sits */}
